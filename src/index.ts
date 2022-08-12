@@ -10,6 +10,10 @@ type Country = {
     flag:string,// url of the flag is a string
 }
 
+type HtmlProps = {
+    className?:string
+}
+
 const countriesNodes:HTMLElement[]= [];
 
 async function GetCountry(typed:string | undefined) 
@@ -42,15 +46,13 @@ function handleInput() {
 }
 
 function PrintCountry(country:Country) {
-    let name = createHtmlElement('h1',country.name);
-    let capital = createHtmlElement('h4',country.capital);
-    let population = createHtmlElement('p',country.population.toString());
-
-    const flag = document.createElement('img');
-    flag.className = 'flag';
-    flag.src = country.flag;
-
-    const container = document.createElement('div');
+    const name = createHtmlElement('h1',country.name);
+    const capital = createHtmlElement('h4',country.capital);
+    const population = createHtmlElement('p',country.population.toString());
+    const flag = createImage(country.flag,{className:'flag'});
+    
+    const container = createHtmlElement('div');
+    
     container.append(name);
     container.append(capital);
     container.append(population);
@@ -61,11 +63,23 @@ function PrintCountry(country:Country) {
     document.body.append(container);
 }
 
-function createHtmlElement(type:string,text:string) 
+function createHtmlElement(type:string,text?:string,props?:HtmlProps) 
 {
-    const element = document.createElement(type);
-    element.textContent = text;
+    let element; 
+    if (type=='img') element = document.createElement(type) as HTMLImageElement;
+    else element = document.createElement(type);
+
+    if(text) element.textContent = text;
+    if (props?.className) element.className = props.className;
+
     return element;
+}
+
+function createImage(src:string,props?:HtmlProps) {
+    const img = document.createElement('img');
+    img.src = src;
+    if (props?.className) img.className = props.className;
+    return img;
 }
 
 input?.addEventListener('input',debounce(handleInput,800));
