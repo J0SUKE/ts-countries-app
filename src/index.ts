@@ -1,5 +1,5 @@
 import {debounce} from 'lodash';
-import type { ServerRuntimeConfig } from 'snowpack';
+
 
 const input = document.querySelector<HTMLInputElement>('.countyName');
 
@@ -24,6 +24,11 @@ async function GetCountry(typed:string | undefined)
 function handleInput() {
     GetCountry(input?.value)
     .then((data:any[])=>{
+        
+        countriesNodes.forEach(node => {
+            node.remove();
+        });    
+        
         data.forEach(item => {
             let country:Country = {
                 name:item.name.common,
@@ -31,11 +36,6 @@ function handleInput() {
                 population:item.population,
                 flag:item.flags.svg
             }
-
-            countriesNodes.forEach(node => {
-                node.remove();
-            });    
-
             PrintCountry(country);
         });
     })
