@@ -10,6 +10,10 @@ type Country = {
     flag:string,// url of the flag is a string
 }
 
+type Props = {
+    [propName:string] : string
+}
+
 const countriesNodes:HTMLElement[]= [];
 
 async function GetCountry(typed:string | undefined) 
@@ -59,7 +63,7 @@ function PrintCountry(country:Country) {
     document.body.append(container);
 }
 
-function createHtmlElement(type:string,text?:string,props?:{className?:string,src?:string}) 
+function createHtmlElement(type:string,text?:string,props?:Props) 
 {
     let element = document.createElement(type) as any;
 
