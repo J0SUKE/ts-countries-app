@@ -10,10 +10,6 @@ type Country = {
     flag:string,// url of the flag is a string
 }
 
-type HtmlProps = {
-    className?:string
-}
-
 const countriesNodes:HTMLElement[]= [];
 
 async function GetCountry(typed:string | undefined) 
@@ -49,7 +45,7 @@ function PrintCountry(country:Country) {
     const name = createHtmlElement('h1',country.name);
     const capital = createHtmlElement('h4',country.capital);
     const population = createHtmlElement('p',country.population.toString());
-    const flag = createImage(country.flag,{className:'flag'});
+    const flag = createHtmlElement('img',undefined,{src:country.flag,className:'flag'});
     
     const container = createHtmlElement('div');
     
@@ -63,23 +59,17 @@ function PrintCountry(country:Country) {
     document.body.append(container);
 }
 
-function createHtmlElement(type:string,text?:string,props?:HtmlProps) 
+function createHtmlElement(type:string,text?:string,props?:{className?:string,src?:string}) 
 {
-    let element; 
-    if (type=='img') element = document.createElement(type) as HTMLImageElement;
-    else element = document.createElement(type);
+    let element = document.createElement(type) as any;
 
     if(text) element.textContent = text;
     if (props?.className) element.className = props.className;
+    if (props?.src) element.src = props.src;
+    
 
     return element;
 }
 
-function createImage(src:string,props?:HtmlProps) {
-    const img = document.createElement('img');
-    img.src = src;
-    if (props?.className) img.className = props.className;
-    return img;
-}
 
 input?.addEventListener('input',debounce(handleInput,800));
